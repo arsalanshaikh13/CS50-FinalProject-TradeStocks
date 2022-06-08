@@ -99,5 +99,5 @@ This course teaches students the art of programming by making them understand ho
 
 Thank you for all CS50.
 
-- Where I get CS50 course?
+- Where to look for CS50 course?
 https://cs50.harvard.edu/x/2022/
