@@ -51,7 +51,7 @@ The objective of the app design is to make features self explanatory and enable 
 | :---: | :---: |
 |![add money](application/screenshots/add.gif)|![Redeem money](application/screenshots/redeem.gif)|
 
-### update the profile page
+### Update the profile page
 - set the profile picture by uploading the picture
 - update the profile details along with password
 
