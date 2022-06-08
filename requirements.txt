@@ -1,0 +1,12 @@
+Python 3.10.4
+Flask 2.1.2
+Werkzeug 2.1.2
+flask_sqlalchemy 2.5.1
+python-dotenv 0.20.0
+urllib
+os
+zoneinfo
+functools
+requests
+json
+re
