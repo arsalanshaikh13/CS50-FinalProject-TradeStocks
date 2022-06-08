@@ -72,14 +72,23 @@ Below are the resources used to build this project.
 
 
 ## Prerequisite
+
+### Cloning the Repository
+
+```
+mkdir project
+cd project
+git clone https://github.com/arsalanshaikh13/CS50-FinalProject-TradeStocks.git
+cd CS50-FinalProject-TradeStocks
+```
+
+### iexcloud activation
+Activate your iexcloud account through registration to generate your API key
+in the terminal type `cd project/application` then `code .env` then set API Key
+Set registered API key  as `API_KEY=ENTER YOUR GENERATED API KEY FROM IEXCLOUD`
+
 ### Installation
 By following these instructions you can run this application on your local machine.
 
 Use `pip install -r requirements.txt` to install all the required modules
 type `flask run` in the terminal to start the app
-
-
-### iexcloud activation
-Activate your iexcloud account through registration to generate your API key
-In the terminal type code .env to make .env file in project/application folder
-store the API key in .env file. as `API_KEY = enter your registered iex api key`
