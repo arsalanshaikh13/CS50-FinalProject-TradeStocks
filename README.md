@@ -1,5 +1,5 @@
-# YOUR PROJECT TITLE: TradeStocks
-#### Video Demo:  <URL HERE>
+#  PROJECT TITLE: TradeStocks
+#### Video Demo:  https://www.youtube.com/watch?v=5iyWlVQoKI0
 #### Description:
 >This was my final project for the CS50 Introduction to Computer Sciense course.
 
