@@ -82,4 +82,4 @@ type `flask run` in the terminal to start the app
 ### iexcloud activation
 Activate your iexcloud account through registration to generate your API key
 In the terminal type code .env to make .env file in project/application folder
-store the API key in .env file. as `API_KEY = your registered iex api key`
+store the API key in .env file. as `API_KEY = enter your registered iex api key`
