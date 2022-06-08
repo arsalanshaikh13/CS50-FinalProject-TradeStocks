@@ -1,8 +1,7 @@
 # YOUR PROJECT TITLE: TradeStocks
 #### Video Demo:  <URL HERE>
 #### Description:
-## CS50
-about cs50 course
+>This was my final project for the CS50 Introduction to Computer Sciense course.
 
 ## About TradeStocks app
 it is an app that helps you buy, sell stocks, add and redeem money from account, track your investment, giving realtime data on current share price along with comparing with your invested value thereby giving real time data about  profit and loss of your current portfolio value with respect to invested value and also there are charts and datatables that provide visualization of the contribution of the stocks  to your portfolio in terms of quantity and value thereby helping you to understand the performance of your portfolio and it gets affected whenever you buy and sell shares
@@ -92,3 +91,13 @@ By following these instructions you can run this application on your local machi
 
 Use `pip install -r requirements.txt` to install all the required modules
 type `flask run` in the terminal to start the app
+  
+## About CS50
+CS50’s Introduction to Computer Science is a openware course from Havard University and taught by David J. Malan
+
+This course teaches students the art of programming by making them understand how to think algorithmically and solve problems efficiently. Topics include abstraction, algorithms, data structures, encapsulation, resource management, security, and software engineering. Languages include C, Python, SQL, HTML, CSS, and JavaScript (for web development).
+
+Thank you for all CS50.
+
+- Where I get CS50 course?
+https://cs50.harvard.edu/x/2022/
