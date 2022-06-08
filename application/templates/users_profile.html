@@ -1,0 +1,371 @@
+{% extends "index.html" %}
+{% set active_page = '/user_profile' %}
+{% block title %}
+    User Profile
+{% endblock %}
+
+{% block main %}
+    <div class="pagetitle">
+      <h1>Profile</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index_copy.html">Home</a></li>
+          <li class="breadcrumb-item active">Profile</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-12">
+
+          <div class="card">
+            <div class="card-body pt-2">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                </li>
+
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+                </li>
+
+              </ul>
+              <div class="tab-content pt-1">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                  <div class="row">
+                    <div class="col-md-4 col-lg-4 " style="padding-top:15px;">
+                      <div class="card-body profile-card pt-4 d-flex flex-column align-items-center " id="card-profile-body" >
+
+                        <img src="/static/assets/img/{{image if image else 'Upi.png' }}" alt="Profile" class="rounded-circle">
+                        <h2>{{username}}</h2>
+                        <h3>{{email}}</h3>
+
+                      </div>
+
+                    </div>
+                    <div class="col-md-8 col-lg-8">
+                      <h5 class="card-title">Profile Details</h5>
+
+                      <div class="row">
+                        <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                        <div class="col-lg-9 col-md-8">{{name or ""}}</div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Username</div>
+                        <div class="col-lg-9 col-md-8">{{username or ""}}</div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Email</div>
+                        <div class="col-lg-9 col-md-8">{{email or ""}}</div>
+                      </div>
+
+
+                      <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Birthdate</div>
+                        <div class="col-lg-9 col-md-8">{{birthdate.strftime("%d-%B-%Y") if birthdate else ""}}</div>
+                      </div>
+
+
+                      <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Address</div>
+                        <div class="col-lg-9 col-md-8">{{address or ""}}</div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Phone</div>
+                        <div class="col-lg-9 col-md-8">{{(phone_number|string) if phone_number else ""}}</div>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                  <!-- Profile Edit Form -->
+                  <form action="/user_profile" method="post" enctype="multipart/form-data">
+                    <div class="row mb-3">
+                      <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                      <div class="col-md-8 col-lg-9">
+                        <img src="/static/assets/img/{{image if image else 'Upi.png' }}" alt="Profile">
+                        <div class="pt-2">
+                          <!-- <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a> -->
+
+                          <input type="file" name="file">
+                          <button type="submit" class="btn btn-primary btn-sm" title="Upload my profile image" ><i class="bi bi-upload"></i></button>
+                          <!-- <button type="submit" class="btn btn-danger btn-sm" title="Remove my profile image" ><i class="bi bi-trash"></i></button> -->
+
+                          <a href="#1" data-confirm="Are you sure you want to delete this picture" class="btn btn-danger btn-sm" title="Remove my profile image" ><i class="bi bi-trash"></i></a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="fullname" type="text" class="form-control" id="fullName" >
+                      </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                      <label for="Username" class="col-md-4 col-lg-3 col-form-label">Username</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="username" type="text" class="form-control" id="Username" >
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="email" type="email" class="form-control" id="Email" >
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="birthdate" class="col-md-4 col-lg-3 col-form-label">Birthdate</label>
+                      <div class="col-md-8 col-lg-9  ">
+                      <div class="input-group" id="datepicker1">
+                          <input name="birthdate" type="text"  class="form-control " id="datepicker" data-toggle="datepicker" >
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="address" type="text" class="form-control" id="Address" >
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="phone_number" type="text" class="form-control" id="Phone" >
+                      </div>
+                    </div>
+
+                    <div class="text-center">
+                      <button type="submit"  class="btn btn-primary">Save Changes</button>
+                    </div>
+                  </form> <!--End Profile Edit Form-->
+
+                </div>
+
+                <div class="tab-pane fade pt-3" id="profile-change-password">
+                  <!-- Change Password Form -->
+                  <form action="/user_profile" method="post" enctype="multipart/form-data">
+
+                    <div class="row mb-3">
+                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                      <div class="col-md-6 col-lg-6">
+                        <div class="input-group">
+                          <input name="old_password" type="password" class="form-control password1" id="currentPassword" autofocus required>
+                          <span class="input-group-text" id="inputGroupAppend1" ><i id="eye" data-toggle="tooltip" data-placement="top" title="show password" style="cursor:pointer" class="bi bi-eye-fill"></i></span>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                       <div class="col-md-6 col-lg-6 ">
+                        <div class="input-group">
+                          <input type="password" name="new_password" class="form-control password1" id="newPassword" autofocus required pattern="[A-Za-z\d@$!#%*?&]{8,20}" title="1st uppercase letter, 2nd  lowercase letter, 3rd number, 4th special character, min 8 characters ">
+                          <span class="input-group-text" id="inputGroupAppend1" ><i id="eye" data-toggle="tooltip" data-placement="top" title="show password" style="cursor:pointer" class="bi bi-eye-fill"></i></span>
+                        </div>
+                        <span id="result1"></span>
+
+                      </div>
+
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                      <div class="col-md-6 col-lg-6">
+                        <div class="input-group">
+                          <input type="password" name="confirmation" class="form-control password1" id="renewPassword" autofocus required>
+                          <span class="input-group-text" id="inputGroupAppend2" ><i id="eye" data-toggle="tooltip" data-placement="top" title="show password" style="cursor:pointer" class="bi bi-eye-fill"></i></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="text-center">
+                      <button type="submit"  class="btn btn-primary">Change Password</button>
+                    </div>
+                  </form><!-- End Change Password Form -->
+
+                </div>
+
+              </div><!-- End Bordered Tabs -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // https://developer.mozilla.org/en-US/docs/Web/API/Element/classList
+
+          var x = document.getElementsByClassName("password1");
+          var eye = document.querySelectorAll(".bi.bi-eye-fill");
+          console.log('hi')
+          for(let i=0;i<x.length;i++){
+              eye[i].addEventListener('click', function(){
+                  console.log('jijsdi')
+                  if (x[i].type === "password" ) {
+                  console.log('zzz')
+                  x[i].type = "text";
+                  eye[i].classList.replace('bi-eye-fill','bi-eye-slash');
+                  // eye.classList.add('.bi.bi-eye-slash');
+                } else {
+                      x[i].type = "password";
+                      eye[i].classList.replace('bi-eye-slash', 'bi-eye-fill');
+                      // eye.classList.add('.bi.bi-eye-fill');
+                }
+              })
+
+          }
+
+
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <!-- date picker -->
+
+  <!--this below bootstrap script code overrides the original script code of bootstrap in index copy so data toggle does not work in user_profile-->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script> -->
+
+  <script>
+    // https://stackoverflow.com/questions/9139075/how-to-show-a-confirm-message-before-delete/19973570#19973570
+    // https://stackoverflow.com/questions/3788946/how-do-i-dynamically-enable-disable-links-with-jquery
+    // https://stackoverflow.com/questions/179713/how-to-change-the-href-attribute-for-a-hyperlink-using-jquery/28016553#28016553
+    // https://stackoverflow.com/questions/179713/how-to-change-the-href-attribute-for-a-hyperlink-using-jquery
+    // https://stackoverflow.com/questions/5874652/prop-vs-attr
+    var anchors = document.querySelector('a[href*="#1"]');
+      anchors.addEventListener('click',function(e){
+      e.preventDefault()
+      var choice = confirm(this.getAttribute('data-confirm'));
+
+      if (choice) {
+        anchors.href = "/delete_picture";
+        // console.log(anchors.href)
+        window.location.href = anchors.href
+        // window.location.href = this.getAttribute('href');
+      }
+
+    });
+
+//jquery format
+//     $('A[data-confirm]').on("click", function (e) {
+
+//       e.preventDefault();
+
+//     var choice = confirm($(this).attr('data-confirm'));
+
+//     if (choice) {
+//         // $(this).attr('href') = '/delete_picture';
+//         window.location.href = $(this).attr('href', '/delete_picture');
+//     }
+// });
+  </script>
+  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script> -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+ <script type="text/javascript" >
+        // Data Picker Initialization
+        //bootstrap datepicker
+        // https://stackoverflow.com/questions/29371227/bootstrap-datetimepicker-styles-not-applied-correctly
+        // https://stackoverflow.com/questions/1212696/jquery-ui-datepicker-datepicker-is-not-a-function#comment23125076_4313112
+            $('#datepicker').datepicker({
+
+              format: 'dd-mm-yyyy',
+              weekStart: 1,
+              daysOfWeekHighlighted: "6,0",
+              autoclose: true,
+              todayHighlight: true,
+              zIndexOffset : 1
+              });
+
+ </script>
+  <script>
+      /* I don't own this script but i edit it quite a bit */
+  /* copied from https://www.formget.com/password-strength-checker-in-jquery/ */
+
+  $(() => {
+  $('#newPassword').keyup(function() {
+  $('#result1').html(checkStrength($('#newPassword').val()))
+  })
+  function checkStrength(password) {
+      var strength = 0
+      const btn = $('#submit')
+      if (password.length == 0) {
+          $('#result1').hide('fast')
+      } else {
+          $('#result1').show('fast')
+      }
+      if (password.length < 6) {
+          $('#result1').removeClass()
+          // class=short defined in pass.css
+          $('#result1').addClass('short')
+          // https://www.w3schools.com/jquery/html_prop.asp
+          btn.prop('disabled', true)
+          return 'Too short'
+      }
+      if (password.length > 7) strength += 1
+      // If password contains both lower and uppercase characters, increase strength value.
+      if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) strength += 1
+      // If it has numbers and characters, increase strength value.
+      if (password.match(/([a-zA-Z])/) && password.match(/([0-9])/)) strength += 1
+      // If it has one special character, increase strength value.
+      if (password.match(/([!,%,&,@,#,$,^,*,?,_,~])/)) strength += 1
+      // If it has two special characters, increase strength value.
+      if (password.match(/(.*[!,%,&,@,#,$,^,*,?,_,~].*[!,%,&,@,#,$,^,*,?,_,~])/)) strength += 1
+      // Calculated strength value, we can return messages
+      // If value is less than 2
+      if (strength < 2) {
+          $('#result1').removeClass()
+          $('#result1').addClass('weak')
+          btn.prop('disabled', true)
+          return 'Weak'
+      } else if (strength == 2) {
+          $('#result1').removeClass()
+          $('#result1').addClass('good')
+          btn.prop('disabled', false)
+          return 'Good'
+      } else {
+          $('#result1').removeClass()
+          $('#result1').addClass('strong')
+          btn.prop('disabled', false)
+          return 'Strong'
+      }
+  }
+  });
+    </script>
+
+  <script>
+    // https://www.w3schools.com/bootstrap/bootstrap_ref_js_tooltip.asp
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  </script>
+
+{% endblock %}
+  <!-- End #main -->
+

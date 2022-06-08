@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+
+        <!-- http://getbootstrap.com/docs/5.1/ -->
+        <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
+        <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"></script>
+
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"> -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css">
+
+
+        <!-- Bootstrap Font Icon CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+
+        <!-- https://favicon.io/emoji-favicons/money-bag/ -->
+        <link href="/static/assets/img/favicon.ico" rel="icon">
+
+        <!-- Template Main CSS File -->
+        <link href="/static/assets/css/styles.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+
+
+        <title>TradeStocks {% block title %}{% endblock %}</title>
+
+
+
+    </head>
+    <!--refer links above flash div below-->
+    <body onmousemove="setTimeout(function(){$('#flash').hide(500)},1000);">
+
+      <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="/" class="logo d-flex align-items-center">
+        <img src="/static/assets/img/logo.png" alt="">
+        <span class="d-none d-lg-block" >TradeStocks</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+    {% if session["user_id"] %}
+
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+
+        <li class="nav-item ">
+          <a class="nav-link nav-icon d-none  d-sm-inline " data-bs-toggle="modal" data-bs-target="#ExtralargeModalQuote" >
+            <span style="cursor:pointer"> Get Quote</span>
+          </a>
+        </li><!-- End get quote -->
+
+
+        <li class="nav-item ">
+          <a class="nav-link nav-icon d-none  d-sm-inline" data-bs-toggle="modal" data-bs-target="#ExtralargeModalBuy" >
+            <span style="cursor:pointer">Buy</span>
+          </a>
+        </li><!-- End Buy -->
+
+        <li class="nav-item ">
+          <a class="nav-link nav-icon d-none  d-sm-inline" data-bs-toggle="modal" data-bs-target="#ExtralargeModalSell" >
+            <span style="cursor:pointer">Sell</span>
+          </a>
+        </li><!-- End sell-->
+
+        <li class="nav-item ">
+          <a class="nav-link nav-icon d-none  d-sm-inline" data-bs-toggle="modal" data-bs-target="#ExtralargeModalMoney" >
+            <span class="btn btn-info" style="color:white">Add/Redeem</span>
+          </a>
+        </li><!-- End add/redeem-->
+
+        <li class="nav-item dropdown pe-3 ">
+          <!-- https://getbootstrap.com/docs/4.0/utilities/borders/ -->
+          <a class="nav-link nav-profile  d-flex align-items-center pe-0" href="#" id="profile" data-bs-toggle="dropdown" data-bs-target="#dropdown-nav">
+            <img src="/static/assets/img/{{image or 'Upi.png' }}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{name}}</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul id="drowpdown-nav" class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{name}}</h6>
+              <span>{{email}}</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/user_profile">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/logout">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Log Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+        {% endif %}
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+
+    <!-- ======= Sidebar ======= -->
+  <!-- https://www.w3schools.com/tags/tag_aside.asp -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+      {% if session["user_id"] %}
+      <li class="nav-item">
+        <a class="nav-link " href="{{url_for('index')}}">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Account</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+          <li>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#ExtralargeModalMoney">
+              <i class="bi bi-circle"></i><span>Add Money/Redeem</span>
+            </a>
+          </li>
+
+        </ul>
+      </li><!-- End Account Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav-1" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Shares</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav-1" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#ExtralargeModalQuote">
+              <i class="bi bi-circle"></i><span >Get Quote</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#ExtralargeModalBuy">
+              <i class="bi bi-circle"></i><span>Buy</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#ExtralargeModalSell">
+              <i class="bi bi-circle"></i><span>Sell</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Shares Nav -->
+
+
+      <li class="nav-heading">Pages</li>
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/history">
+          <i class="bi bi-wallet"></i>
+          <span>Transactions</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/user_profile">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/logout">
+          <i class="bi bi-box-arrow-left"></i>
+          <span>Log Out</span>
+        </a>
+      </li><!-- End Logou Page Nav -->
+
+      {% else %}
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/register">
+          <i class="bi bi-card-list"></i>
+          <span>Register</span>
+        </a>
+      </li><!-- End Register Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/login">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Login</span>
+        </a>
+      </li><!-- End Login Page Nav -->
+      {% endif %}
+
+      </ul>
+    </aside>
+
+    <main id="main" class="main">
+      <!-- https://jinja.palletsprojects.com/en/3.1.x/tricks/ -->
+      {% set navigation_bar = [('/', '/history', '/register','/quote', '/user_profile')]%}
+      <!-- {# for index, history in navigation_bar#} -->
+      <!-- {# if active_page != index #} -->
+      <!-- {#block main #}{# endblock #} -->
+      <!-- {# else #} -->
+      <!-- the rest -->
+      <!-- {# endif #} -->
+      <!-- {#endfor#} -->
+      {% set active_page = active_page|default('/') %}
+      <!-- //       // https://stackoverflow.com/questions/57660542/flask-closing-flash-message -->
+      <!-- https://github.com/hack4impact/flask-base/blob/master/app/templates/partials/_flashes.html -->
+      <!-- https://www.w3schools.com/tags/ref_eventattributes.asp -->
+      <!-- data-autohide push notifications toasts bootstrap https://getbootstrap.com/docs/4.3/components/toasts/ -->
+      <!-- https://stackoverflow.com/questions/52151809/how-to-fade-out-an-alertwidget-after-some-seconds -->
+      {% if get_flashed_messages() %}
+
+        <div id="flash"   class="alert alert-primary mb-0 text-center" role="alert">
+            {{ get_flashed_messages() | join(" ") }}
+        </div>
+
+          {% endif %}
+
+          {%if active_page != '/' %}
+            {% block main%}
+            {% endblock %}
+          {% else %}
+
+      {% if session["user_id"] %}
+
+      <div class="pagetitle">
+        <h1>Welcome {{name}}!</h1>
+
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+
+
+      <section class="section dashboard">
+        <div class="row">
+          <!-- Left side columns -->
+        <div class="col-lg-8">
+          <div class="row">
+
+            <!-- Latest Invested Value -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card" data-aos="fade-down" >
+                <div class="card-body">
+                  <h5 class="card-title"> Invested Value <span>| Today</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-currency-dollar"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{invested_value | usd}}</h6>
+                      <!-- <span class="text-success small pt-1 fw-bold"></span> <span class="text-muted small pt-2 ps-1">money invested</span> -->
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div><!--end of Invested value-->
+
+            <!-- Latest Current Portfolio Value -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card" data-aos="fade-down" >
+                <div class="card-body">
+                  <h5 class="card-title">Current Portfolio Value <span>| Today</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-currency-dollar"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{total_shares_value | usd}}</h6>
+                      <!-- <span class="text-success small pt-1 fw-bold">{{percent}}%</span> <span class="text-muted small pt-2 ps-1">increase</span> -->
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div><!--end of current portfolio  value-->
+
+                 <!-- Cash Balance -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card" data-aos="fade-up">
+                <div class="card-body">
+                  <h5 class="card-title">Cash Balance <span>| Today</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-cash-stack"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{curr_cash | usd}}</h6>
+                      <!-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span> -->
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div><!--end of cash balance-->
+
+        <!-- Total Investment  return value -->
+        <div class="col-xxl-4 col-md-6">
+          <div class="card info-card customers-card" data-aos="fade-up">
+            <div class="card-body">
+              <h5 class="card-title">Total Investment Value <span>| Today</span></h5>
+
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bi bi-cash-coin"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{{total_value | usd}}</h6>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div><!--end of total investment value-->
+
+        <!-- Recent Sales -->
+      <div class="col-12">
+        <div class="card recent-sales overflow-auto" data-aos="fade-left">
+
+          <div class="card-body">
+            <h5 class="card-title">Stocks Portfolio <span>| Today</span></h5>
+
+            <!--jquery datatable css https://datatables.net/examples/styling/bootstrap5.html-->
+            <!--the link below will alter your existing bootstrap css-->
+        <!-- <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"  rel="stylesheet"> -->
+        <!--only use this link to format datatable css-->
+        <link crossorigin="anonymous" href="https://cdn.datatables.net/1.12.0/css/dataTables.bootstrap5.min.css"  rel="stylesheet">
+
+            <table class="table table-striped table-light table-hover table-responsive " id="example"><!--https://legacy.datatables.net/release-datatables/examples/basic_init/table_sorting.html-->
+              <thead>
+                  <tr>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Company</th>
+                    <th scope="col">Current Share Price</th>
+                    <th scope="col">Shares Owned</th>
+                    <th scope="col">Invested Value</th>
+                    <th scope="col">Current Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {% for row in holdings %}
+                  <tr>
+                    <td>{{row['symbol']}}</td>
+                    <td>{{row['company']}}</td>
+                    <td>{{row['share_price'] | usd}}</td>
+                    <td>{{row['shares_owned']}}</td>
+                    <td>{{row['invested_value'] | usd}}</td>
+                    <td>{{row['latest_value'] | usd}}</td>
+
+                  </tr>
+                  {% endfor %}
+
+                </tbody>
+                <tfoot>
+                    <tr>
+
+                      <th scope="1" colspan="4" style="text-align:center">Invested Value vs Current Portfolio Value</th>
+                      <th scope="1">{{invested_value | usd}}</th>
+                      <th scope="1">{{total_shares_value | usd}}</th>
+
+                    </tr>
+
+                    <tr>
+
+                        <th scope="1" colspan="4" style="text-align:center">Cash Balance</th>
+                        <th scope="1" colspan="2" style="text-align:center">{{curr_cash | usd}}</th>
+                    </tr>
+                    <tr>
+
+                        <th scope="1" colspan="4" style="text-align:center">Total Investment Value</th>
+                        <th scope="1" colspan="2" style="text-align:center">{{total_value | usd}}</th>
+                    </tr>
+                </tfoot>
+
+              </table>
+
+          </div>
+        </div>
+      </div>
+
+        </div> <!--end of left sided columns-->
+
+
+      </div>
+
+      <div class="col-lg-4">
+        <!-- Profit and Loss -->
+
+        <div class="row">
+          <div class="col">
+            <div class="card info-card sales-card" data-aos="fade-down" >
+              <div class="card-body">
+                <h5 class="card-title">Profit and Loss  <span>| Today </span></h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-currency-exchange"></i>
+                  </div>
+                  <div class="ps-3" >
+                    <h6 id="diff"> {{diff | usd}} </h6>
+                    <span class="text-success small pt-1 fw-bold " id="percent">{{percent}}% </span> <span class="text-muted small pt-2 ps-1" id="change"> Profit</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!--end of Profit and Loss-->
+        <script>
+          document.addEventListener('DOMContentLoaded', function(){
+            let diff = document.querySelector('#diff');
+            let percent = document.querySelector('#percent');
+            let change = document.querySelector('#change');
+            if (percent.innerHTML.includes("-")) {
+              diff.style.color = 'red';
+              percent.classList.remove('text-success');
+              percent.classList.add('text-danger');
+              change.innerHTML = " Loss";
+            }
+            else{
+              diff.style.color = 'green';
+            }
+          })
+
+        </script>
+
+        <div class="row">
+          <div class="col">
+            <div class="card info-card sales-card" data-aos="fade-up" >
+              <div class="card-body">
+                <h5 class="card-title">Most Profitable shared  <span>| Today</span></h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-stars"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6> {{hold2[0]['profit'] | usd}}</h6>
+                    <span class="text-success small pt-1 fw-bold">{{hold2[0]['company']}}</span> <span class="text-muted small pt-2 ps-1"> {{hold2[0]['symbol']}}</span>
+                  </div>
+                </div>
+
+              </div>
+
+          </div><!--end of most profitable share-->
+
+        <!-- Most Valuable Share -->
+          <div class="row">
+            <div class="col">
+              <div class="card info-card sales-card" data-aos="fade-left" >
+                <div class="card-body">
+                  <h5 class="card-title">Most Value Contributing Share  <span> </span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-stars"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6> {{hold[0]['latest_value'] | usd}}</h6>
+                      <span class="text-success small pt-1 fw-bold">{{hold[0]['company']}}</span> <span class="text-muted small pt-2 ps-1"> {{hold[0]['symbol']}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!--end of most Valuable share-->
+
+          <div class="row">
+            <div class="col">
+              <div class="card info-card sales-card" data-aos="fade-right" >
+                <div class="card-body">
+                  <h5 class="card-title">Least Value Contributing Share  <span> </span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-stars"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6> {{hold[-1]['latest_value'] | usd}}</h6>
+                      <span class="text-success small pt-1 fw-bold">{{hold[-1]['company']}}</span> <span class="text-muted small pt-2 ps-1"> {{hold[-1]['symbol']}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!--end of least Valuable share-->
+
+          <div class="row">
+            <div class="col">
+              <div class="card info-card sales-card" data-aos="fade-left" >
+                <div class="card-body">
+                  <h5 class="card-title">Most Purchased Share  <span></span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-stars"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6> <span data-purecounter-start="0" data-purecounter-end="{{hold1[0]['shares_owned']}}" data-purecounter-duration="1.5" class="purecounter"></span></h6>
+                      <span class="text-success small pt-1 fw-bold">{{hold1[0]['company']}}</span> <span class="text-muted small pt-2 ps-1"> {{hold1[0]['symbol']}}</span>
+                    </div>
+                  </div>
+
+                </div>
+
+            </div><!--end of Most Purchased share-->
+
+            <div class="row">
+              <div class="col">
+                <div class="card info-card sales-card" data-aos="fade-left" >
+                  <div class="card-body">
+                    <h5 class="card-title">Least Purchased Share  <span></span></h5>
+
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-stars"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6> <span data-purecounter-start="0" data-purecounter-end="{{hold1[-1]['shares_owned']}}" data-purecounter-duration="1" class="purecounter"></span></h6>
+                        <span class="text-success small pt-1 fw-bold">{{hold1[-1]['company']}}</span> <span class="text-muted small pt-2 ps-1"> {{hold1[-1]['symbol']}}</span>
+                      </div>
+                    </div>
+
+                  </div>
+
+              </div><!--end of Least Purchased share-->
+
+            </div>
+          </div>
+      </div>
+
+      </section>
+
+      <section class="section">
+        <div class="row">
+
+
+          <div class="col-lg-6">
+            <div class="card" data-aos="zoom-in">
+              <div class="card-body">
+                <h5 class="card-title">Contribution of Shares by Quantity</h5>
+
+                <!-- Donut Chart -->
+                <div id="donut_chart"></div>
+
+                <script>
+                  document.addEventListener("DOMContentLoaded", () => {
+                    let qty = JSON.parse({{qty | tojson(indent=2)}});
+                    let company = JSON.parse({{ company | tojson(indent=2)}})
+                    let cost = JSON.parse({{cost|tojson(indent=2)}})
+                    let total_qty = JSON.parse({{total_qty | tojson(indent=2)}})
+
+                    // https://apexcharts.com/javascript-chart-demos/pie-charts/simple-pie-chart/
+                    let options = {
+                        series: qty,
+                        chart: {
+                        height: 300,
+                        type: 'donut',
+                        animations: {
+                          enabled: true,
+                          easing: 'easeinout',
+                          speed: 800,
+                          animateGradually: {
+                              enabled: true,
+                              delay: 150
+                          },
+                        },
+                        },
+                        plotOptions: {
+                        pie: {
+                          donut: {
+                            // customScale: 2,
+                            size:"50%"
+                            }
+                          }
+                        },
+                        labels: company,
+                        dataLabels: {
+                        enabled: true,
+                        // formatter: function(val, opts) {
+                        //             return opts.w.globals.series[opts.seriesIndex]
+                        //           },
+                        },
+                        legend: {
+                                  formatter: function(val, opts) {
+                                    return val + " - " + (((opts.w.globals.series[opts.seriesIndex])/total_qty) * 100).toFixed(1)  + "%"
+                                  },
+                                  position: "left"
+                                },
+                        tooltip:{
+                          // https://github.com/apexcharts/apexcharts.js/issues/52
+                          y: {
+                            formatter: function(val, opts){
+                              return val  //opts.w.globals.series[opts.seriesIndex]
+                            },
+                            title: {
+                            formatter:(SeriesName) => SeriesName
+                          }
+                          }
+                        },
+                        responsive: [{
+                          breakpoint: 480,
+                          options: {
+                            chart: {
+                              width: 200
+                            },
+                            legend: {
+                              position: 'bottom'
+                            }
+                          }
+                        }]
+                      };
+
+                      const chart = new ApexCharts(document.querySelector("#donut_chart"), options);
+                      chart.render();
+                  });
+                </script>
+                <!-- End Donut Chart -->
+<!--
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body"> -->
+                <!-- <h5 class="card-title">Contribution of shares by Quantity</h5> -->
+
+                <!-- Bar Chart -->
+                <div id="barChart"></div>
+
+                <script>
+                  document.addEventListener("DOMContentLoaded", () => {
+                    let qty = JSON.parse({{qty | tojson(indent=2)}});
+                    let company = JSON.parse({{ company | tojson(indent=2)}})
+                    let cost = JSON.parse({{cost|tojson(indent=2)}})
+
+                    new ApexCharts(document.querySelector("#barChart"), {
+                      series: [{
+                        data: qty
+                      }],
+                      chart: {
+                        type: 'bar',
+                        height: 350,
+                        toolbar: {
+                          show: false
+                        },
+                        animations: {
+                          enabled: true,
+                          easing: 'easeinout',
+                          speed: 800,
+                          animateGradually: {
+                              enabled: true,
+                              delay: 150
+                          },
+                        }
+                      },
+                      plotOptions: {
+                        bar: {
+                          borderRadius: 4,
+                          horizontal: true,
+                          dataLabels: {
+                            position: 'top'
+                          },
+                        }
+                      },
+                      dataLabels: {
+                        enabled: true,
+                        style:{
+                          colors: ['#333']
+                        },
+                        offsetX: 15
+                      },
+                      xaxis: {
+                        categories: company,
+                        title: {
+                        text: 'Shares Quantity'
+                      }
+                      },
+                      grid: {
+                        padding: {
+                          left: 35,
+                        }
+                      },
+                      yaxis: {
+                        labels: {
+                          show: true,
+                          align: 'right',
+                          offsetX: 10
+                        },
+                      },
+                      tooltip:{
+                        // https://github.com/apexcharts/apexcharts.js/issues/52
+                        y: {
+                          title: {
+                          formatter:(SeriesName) => 'Quantity'
+                        }
+                        }
+                      }
+                    }).render();
+                  });
+                </script>
+                <!-- End Bar Chart -->
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card" data-aos="zoom-in">
+              <div class="card-body">
+                <h5 class="card-title"> Contribution of shares by Value</h5>
+
+                <!-- Donut Chart -->
+                <div id="donutChart"></div>
+
+                <script>
+                  document.addEventListener("DOMContentLoaded", () => {
+                    let company = JSON.parse({{ company | tojson(indent=2)}})
+                    let cost = JSON.parse({{cost|tojson(indent=2)}})
+                    let total_cost = JSON.parse({{total_cost | tojson(indent=2)}})
+
+                    // https://github.com/apexcharts/apexcharts.js/issues/1714
+                    new ApexCharts(document.querySelector("#donutChart"), {
+                      series: cost,
+                      chart: {
+                        height: 300,
+                        type: 'donut',
+                        toolbar: {
+                          show: false
+                        },
+                        animations: {
+                          enabled: true,
+                          easing: 'easeinout',
+                          speed: 800,
+                          animateGradually: {
+                              enabled: true,
+                              delay: 150
+                          },
+                        }
+                      },
+                      plotOptions: {
+                        pie: {
+                          donut: {
+                            size:"50%"
+                          }
+                        }
+                      },
+                      labels: company,
+                      dataLabels: {
+                        enabled: true,
+                        // formatter: function(val, opts) {
+                        //           return "$" + opts.w.globals.series[opts.seriesIndex].toFixed(2)
+                        //          }
+                      },
+                      legend: {
+                                formatter: function(val, opts) {
+                                  return val + " - " + (((opts.w.globals.series[opts.seriesIndex])/total_cost) * 100).toFixed(1)  + "%"
+                                 },
+                                 position: "left"
+                              },
+                    }).render();
+                  });
+                </script>
+                <!-- End Donut Chart -->
+<!--
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body"> -->
+                <!-- <h5 class="card-title">Contribution of shares by Value</h5> -->
+
+                <!-- Bar Chart -->
+                <div id="barChart1"></div>
+
+                <script>
+                  document.addEventListener("DOMContentLoaded", () => {
+                    let qty = JSON.parse({{qty | tojson(indent=2)}});
+                    let company = JSON.parse({{ company | tojson(indent=2)}})
+                    let cost = JSON.parse({{cost|tojson(indent=2)}})
+
+                    new ApexCharts(document.querySelector("#barChart1"), {
+                      series: [{
+                        data: cost
+                      }],
+                      chart: {
+                        type: 'bar',
+                        height: 350,
+                        toolbar: {
+                          show: false
+                        },
+                        animations: {
+                          enabled: true,
+                          easing: 'easeinout',
+                          speed: 800,
+                          animateGradually: {
+                              enabled: true,
+                              delay: 150
+                          },
+                        },
+                      },
+                      plotOptions: {
+                        bar: {
+                          borderRadius: 4,
+                          horizontal: true,
+                          dataLabels: {
+                            position: 'top'
+                          },
+                        },
+                      },
+                      dataLabels: {
+                        enabled: true,
+                        style:{
+                          colors: ['#333']
+                        },
+                        offsetX: 50,
+                        formatter: function(val) {
+                          return "$ " + val
+                        }
+                      },
+                      grid: {
+                        padding: {
+                          left: 35,
+                        }
+                      },
+                      xaxis: {
+                        categories: company,
+                        title: {
+                        text: 'Shares Value'
+                      }
+                      },
+                      yaxis: {
+                        labels: {
+                          show: true,
+                          align: 'right',
+                          offsetX: 10
+                        },
+                      },
+                      tooltip: {
+                      y: {
+                        formatter: function(val) {
+                          return "$ " + val
+                        },
+                        title: {
+                          formatter:(SeriesName) => 'Value'
+                        }
+                      }
+                    }
+                    }).render();
+                  });
+                </script>
+                <!-- End Bar Chart -->
+
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </section>
+
+
+      {% else %}
+      <div class="container">
+
+        <section class="section register min-vh-50 d-flex flex-column align-items-center justify-content-center py-2">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                <div class="d-flex justify-content-center py-4">
+                  <a href="index.html" class="logo d-flex align-items-center w-auto">
+                    <img src="/static/assets/img/logo.png" alt="">
+                    <span class="d-none d-lg-block">TradeStocks</span>
+                  </a>
+                </div><!-- End Logo -->
+
+                <div class="card mb-3">
+
+                  <div class="card-body">
+
+                    <div class="pt-4 pb-2">
+                      <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
+                      <p class="text-center small">Enter your username & password to login</p>
+                    </div>
+                    <!-- https://getbootstrap.com/docs/5.0/forms/validation/ -->
+                    <form class="row g-3 needs-validation" novalidate action="/login" method="post">
+                      <div class="col-12">
+                        <label for="yourUsername" class="form-label">Username</label>
+                        <div class="input-group has-validation">
+                          <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-person"></i></span>
+                          <input type="text" name="username" class="form-control" id="yourUsername" required>
+                          <div class="invalid-feedback">Please enter your username.</div>
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <label for="yourPassword" class="form-label">Password</label>
+                        <div class="input-group has-validation">
+                          <input type="password" name="password" class="form-control" id="yourPassword" required >
+                          <span class="input-group-text" id="inputGroupAppend" ><i id="eye" data-toggle="tooltip" data-placement="top" title="show password" style="cursor:pointer"  onclick="eyes()" class="bi bi-eye-fill"></i></span>
+                          <!-- <span toggle="#exampleInputPassword1" onclick="eyes()" class="ion ion-eye field-icon toggle-password"></span> -->
+                          <div class="invalid-feedback">Please enter your password!</div>
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <button class="btn btn-primary w-100" type="submit">Login</button>
+                      </div>
+                      <div class="col-12">
+                        <p class="small mb-0">Don't have account? <a href="{{url_for('register')}}">Create an account</a></p>
+                      </div>
+                      </form>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+      <script>
+        /**
+         * Initiate Bootstrap validation check
+         * https://getbootstrap.com/docs/5.0/forms/validation/
+         */
+        var needsValidation = document.querySelectorAll('.needs-validation')
+
+      Array.prototype.slice.call(needsValidation)
+        .forEach(function(form) {
+          form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+          }, false)
+        })
+
+      </script>
+      <script>
+        // https://developer.mozilla.org/en-US/docs/Web/API/Element/classList
+        function eyes() {
+        var x = document.getElementById("yourPassword");
+        var eye = document.getElementById('eye');
+
+        if (x.type === "password") {
+          x.type = "text";
+          eye.classList.replace('bi-eye-fill','bi-eye-slash');
+      } else {
+          x.type = "password";
+          eye.classList.replace('bi-eye-slash', 'bi-eye-fill');
+      }
+    }
+  </script>
+
+
+      {% endif %}<!--end of session/login -->
+      {% endif %}<!--end of navigation-->
+
+      <!-- https://stackoverflow.com/questions/41046983/how-to-change-bootstrap-modal-body-content-dynamically -->
+      <!-- Extra Large Modal Quote -->
+
+      <div class="modal fade" id="ExtralargeModalQuote" tabindex="-1">
+        <div class="modal-dialog " role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Quote</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/quote" target="iframe_quote" method="post">
+                    <div class="mb-3">
+                        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="symbolq" name="symbol" placeholder="Enter Symbol" type="text" required>
+                    </div>
+                    <!-- <button class="btn btn-primary" type="submit">Find Quote</button> -->
+
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" data-bs-toggle="modal"  id="modalquote"  >Find Quote</button>
+            </div>
+          </form>
+        </div>
+        </div>
+        </div>
+      </div><!-- End Extra Large Modal Quote-->
+
+      <!-- Extra Large Modal Buy -->
+
+      <div class="modal fade" id="ExtralargeModalBuy" tabindex="-1">
+        <div class="modal-dialog " role="document">
+          <div class="modal-content">
+            <div class="modal-header ">
+              <h5 class="modal-title">Buy</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/buy" method="post">
+                    <div class="mb-3">
+                        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="symbol" name="symbol" placeholder="Enter Symbol" type="text" required>
+                    </div>
+                    <div class="form-group mb-3">
+                      <input autocomplete="off" class="form-control mx-auto w-auto" min="1" name="shares" placeholder="Shares" type="number" required>
+                  </div>
+                    <!-- <button class="btn btn-primary" type="submit">Find Quote</button> -->
+
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="modalbuy"  >Buy</button>
+            </div>
+          </form>
+        </div>
+        </div>
+        </div>
+      </div><!-- End Extra Large Modal Buy-->
+
+      <!-- Extra Large Modal Sell -->
+
+      <div class="modal fade" id="ExtralargeModalSell" tabindex="-1">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Sell</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/sell"  method="post">
+                    <div class="form-group mb-3">
+                        <select name="symbol" class="form-control mx-auto w-auto" >
+                            <option disabled selected hidden>Select Shares</option>
+                            {% for h in company_symbol %}
+                              {% if h.symbol != 'CASH' %}
+                              <option class="form-control" value="{{h.symbol}}">{{h.symbol}} - {{h.company}}</option>
+                              {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                      <input autocomplete="off" class="form-control mx-auto w-auto" min="1" name="shares" placeholder=" Enter Shares" type="number" required>
+                  </div>
+                    <!-- <button class="btn btn-primary" type="submit">Find Quote</button> -->
+
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" data-toggle="modal" id="modalsell"  >Sell</button>
+            </div>
+          </form>
+        </div>
+        </div>
+        </div>
+      </div><!-- End Extra Large Modal Money-->
+
+      <div class="modal fade" id="ExtralargeModalMoney" tabindex="-1">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Money</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div id="initial_content" style="display:flex;justify-content:center;" >
+                <a class="btn btn-success btn-lg m-2 " onclick="$('#add_cash').show();$('#redeem_cash').hide();$('#initial_content').hide();">Add Cash</a>
+                <a class="btn btn-success btn-lg m-2" onclick="$('#redeem_cash').show();$('#add_cash').hide();$('#initial_content').hide();">Redeem Cash</a>
+              </div>
+              <div id="add_cash" style="display:none;">
+                <form action="/money"  method="post">
+                  <!-- https://stackoverflow.com/questions/41046983/how-to-change-bootstrap-modal-body-content-dynamically -->
+                  <a class="btn btn-success btn-lg " onclick="$('#initial_content').show();$('#add_cash').hide();">Back</a>
+
+                  <div class="form-group mb-3">
+                    <h2 style="display:flex;justify-content:center;" >Add Money</h2>
+                    <input autocomplete="off" class="form-control mx-auto w-auto" min="1" name="add" placeholder=" Enter amount" type="number" required>
+                </div>
+                  <!-- <button class="btn btn-primary" type="submit">Find Quote</button> -->
+
+                <div class="modal-footer d-flex justify-content-center">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="modaladdcash"  >Add Cash</button>
+                </div>
+              </form>
+              </div>
+              <div id="redeem_cash" style="display:none;">
+                <form action="/money"  method="post">
+                  <a class="btn btn-success btn-lg " onclick="$('#initial_content').show();$('#redeem_cash').hide();">Back</a>
+
+                  <div class="form-group mb-3">
+                    <h2 style="display:flex;justify-content:center;" >Redeem Money</h2>
+                    <input autocomplete="off" class="form-control mx-auto w-auto" min="1" name="redeem" placeholder=" Enter Amount" type="number" required>
+                </div>
+                  <!-- <button class="btn btn-primary" type="submit">Find Quote</button> -->
+
+                <div class="modal-footer d-flex justify-content-center">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="modalredeemCash"  >Redeem Cash</button>
+                </div>
+              </form>
+              </div>
+
+        </div>
+        </div>
+        </div>
+      </div><!-- End Extra Large Modal Sell-->
+
+
+      <!-- Full Screen Modal -->
+
+      <div class="modal fade" id="fullscreenModal" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Quote</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+              <iframe id="quotediframe" src="quoted.html" name="iframe_quote" height="400px" width="100%" title="Iframe Quote" style="border:none; display:flex; justify-content:center"></iframe>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="closequote" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div><!-- End Full Screen Modal-->
+
+      <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    </main>
+
+
+
+        <script src="/static/assets/js/main.js"></script>
+        <!-- https://github.com/michalsnik/aos -->
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>
+          AOS.init();
+        </script>
+        <!-- https://github.com/srexi/purecounterjs/blob/main/purecounter.js -->
+        <script src="https://cdn.jsdelivr.net/npm/@srexi/purecounterjs/dist/purecounter_vanilla.js"></script>
+        <script>
+            new PureCounter();
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+        <!-- https://datatables.net/examples/styling/bootstrap4  this datatable allows to show table footer as well -->
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.0/js/dataTables.bootstrap5.min.js"></script>
+        <script>
+          $(document).ready(function () {
+            $('#example').DataTable();
+          });
+        </script>
+        <script>
+          //delay loading of modal to match the quoted.html loading time in order to only show the html page with quote
+          // https://tutorialdeep.com/knowhow/open-bootstrap-modal-on-button-click-jquery/
+          // https://stackoverflow.com/questions/50083680/how-to-create-a-time-delay-modal-preferably-using-html-jquery-css
+          // https://www.w3schools.com/jquery/event_ready.asp
+          // https://stackoverflow.com/questions/41046983/how-to-change-bootstrap-modal-body-content-dynamically
+          $(document).ready(function(){
+            $('#modalquote').click(function(){
+              setTimeout(function() {$('#fullscreenModal').modal('show');}, 1100);
+              setTimeout(function() {$('#fullscreenModal').modal('hide');}, 8100);
+
+            });
+
+          });
+        </script>
+        <script>
+          // change the src of iframe to blank on clicking close
+          // https://www.w3schools.com/jquery/html_attr.asp
+          // https://stackoverflow.com/questions/2930315/changing-iframe-source-with-jquery
+          // https://stackoverflow.com/questions/5946607/is-an-empty-iframe-src-valid
+          // https://itqna.net/questions/25058/how-create-button-inside-iframe-close-it
+          $(document).ready(function(){
+            $('#closequote').click(function(){
+              $("iframe").attr("src", "about:blank")
+            });
+          });
+
+        </script>
+        <script>
+          // https://www.w3schools.com/bootstrap/bootstrap_ref_js_tooltip.asp
+          $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+          });
+        </script>
+
+        <!-- <script>
+    //       // https://stackoverflow.com/questions/57660542/flask-closing-flash-message
+    // function delete_flash(){
+    //     $('#flash').hide(500);
+    // }
+
+</script> -->
+        </script>
+      </body>
+      <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>Arsalan Shaikh</span></strong>. All Rights Reserved
+    </div>
+    <div class="mb-1 small text-center text-muted">
+      Data provided by <a href="https://iexcloud.io/">IEX</a>
+    </div>
+    <div class="social-links mt-1 d-flex justify-content-center">
+      <a href="#" class="reddit"><i class="bi bi-reddit"></i></a>
+      <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+      <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+      <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+    </div>
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+    </div>
+  </footer><!-- End Footer -->
+
+
+
+</html>
