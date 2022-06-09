@@ -91,7 +91,9 @@ Set registered API key  as `API_KEY=ENTER YOUR GENERATED API KEY FROM IEXCLOUD`
 By following these instructions you can run this application on your local machine.
 
 In the terminal type `cd application` to go into application folder and run `npm install`  to install all the npm packages mentioned in packages.json
+
 Come back to root folder by typing `cd ..` in the terminal and then run  `pip install -r requirements.txt` in the terminal to install all the required modules
+
 Type `flask run` in the terminal to start the app
 
 ## About CS50
