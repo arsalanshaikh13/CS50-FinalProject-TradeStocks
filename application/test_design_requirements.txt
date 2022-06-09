@@ -1,0 +1,68 @@
+flask
+flask_sqlalchemy
+
+
+
+
+
+
+find total invested value by adding all 'BUY' shares
+find toal sell value by adding all 'SELL' shares
+create holdings section where you provide list(select) of shares to select
+on selecting shares you show in modal their buy value and sell value
+ and show the percentage difference between the buy and sell value per share
+
+
+What will your software do? What features will it have? How will it be executed?
+What new skills will you need to acquire? What topics will you need to research?
+If working with one or two classmates, who will do what?
+In the world of software, most everything takes longer to implement than you expect. And so it’s not uncommon to accomplish less in a fixed amount of time than you hope. What might you consider to be a good outcome for your project? A better outcome? The best outcome?
+
+features :
+dashboard
+specific usage of modals for buy, sell, quote, add/redeem money which avoids
+unnecessary loading of pages to buy and sell just enter the details and click and the dashboard get updated with transaction
+and thus causing faster transactions
+transactions on modal help on faster updation of dashboard
+
+password strength checker
+automatic disappearance of flash
+uploading of profile image
+graphs and charts depicting the performance of stocks
+sorting and filter of tables and transaction tables using datatables
+
+card based approach to dashboard highlighting key indicators for stocks
+
+
+├── @srexi/purecounterjs@1.5.0 extraneous
+├── aos@3.0.0-beta.6 extraneous
+├── apexcharts@3.35.2 extraneous
+├── simple-datatables@3.2.0 extraneous
+npm i --save @srexi/purecounterjs
+python==3.10.4
+flask==2.1.2
+werkzeug==2.1.2
+flask_sqlalchemy==2.5.1
+python-dotenv==0.20.0
+Jinja2==2.11.3
+urllib3==1.26.5
+urllib
+os
+zoneinfo
+functools
+requests==2.27.1
+json
+re
+@srexi/purecounterjs 1.5.0
+aos 3.0.0
+apexcharts 3.35.2
+simple-datatables 3.2.0
+* Sqlite3 database: use to store the data, includes 3 tables: user, user_profile, transaction. user stores the username, hashed password (for better security), username, email , cash balance, join date
+transaction stores the transaction data: company, symbol, shareprice, quantity, transaction cost, transaction type, transaction time. user_profile stores the birthdate, profile picture,. stores the information in the database in the backend.
+* flask web application microframework: manages the request from the frontend and responses from the backend. handles the backend of the application
+* flask_sqlalchemy ORM module: for object oriented querying of database, also it is more secure and efficient in querying database as it takes care for CSRF: cross site request forgery by automatically taking care of the format of the query to the database and making it easier to write query in the object oriented format
+* HTML and CSS, Bootstrap CSS framework(inspired/design by bootstrapmade.com): a modular card based designe inspired by dashboard model. provides the front end of the application
+* Json: for sending data to apexcharts for datavisualization, also as a default format for request and response apis for iexcloud.com to get the shares information
+* Urllib: to parse, encode the request information from web application to iexcloud api and decode the response from the api to web app
+* Javascript and Jquery, Datatables.js, AOS.js, passwordchecker.js, Apexchart.js, purecounter.js, datepicker.js.
+aos handles the animation of the cards on the dashboards, datatables helps to visualize the transaction also helps in sorting and filtering shares data , apexcharts helps to visualize the data in donut chart and bar chart in order to provide pictorial descriptive analysis of the portfolio, passwordchecker.js helps to guaage the strength of the password, datepicker provides the calendar format for entering birthdate.

@@ -1,0 +1,204 @@
+{% extends "index.html" %}
+{% set active_page = 'register.html' %}
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+<div class="container">
+
+    <section class="section register  d-flex flex-column align-items-center justify-content-center py-0">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+            <div class="d-flex justify-content-center py-4">
+              <a href="{{url_for('index')}}" class="logo d-flex align-items-center w-auto">
+                <img src="static/assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">TradeStocks</span>
+              </a>
+            </div><!-- End Logo -->
+
+            <div class="card mb-3">
+
+              <div class="card-body">
+
+                <div class="pt-4 pb-2">
+                  <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
+                  <p class="text-center small">Enter your personal details to create account</p>
+                </div>
+
+                <form class="row g-3 needs-validation" action="/register" method="post" >
+                  <div class="col-12">
+                    <label for="yourName" class="form-label">Your Name</label>
+                    <input type="text" name="name" class="form-control" id="yourName" required>
+                    <div class="invalid-feedback">Please, enter your name!</div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="yourEmail" class="form-label">Your Email</label>
+                    <input type="email" name="email" class="form-control" id="yourEmail" required>
+                    <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="yourUsername" class="form-label">Username</label>
+                    <div class="input-group has-validation">
+                      <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-person"></i></span>
+                      <input type="text" name="username" class="form-control" id="yourUsername" required>
+                      <div class="invalid-feedback">Please choose a username.</div>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="yourPassword" class="form-label">Password</label>
+                    <div class="input-group has-validation">
+                      <input type="password" name="password" class="form-control password" id="yourPassword" required pattern="[A-Za-z\d@$!#%*?&]{8,20}" title="1st  uppercase letter, 2nd  lowercase letter, 3rd number, 4th special character, min 8 characters ">
+                      <span class="input-group-text" id="inputGroupAppend" ><i id="eye" data-toggle="tooltip" data-placement="top" title="show password" style="cursor:pointer" class="bi bi-eye-fill"></i></span>
+                      <div class="invalid-feedback">Please enter your password!</div>
+                    </div>
+                    <!-- https://stackoverflow.com/questions/11700985/margin-top-not-working-for-span-element -->
+                    <span id="result"></span>
+
+                  </div>
+
+                  <div class="col-12">
+                    <label for="yourConfirmation" class="form-label">Confirm Password</label>
+                    <div class="input-group has-validation">
+                      <input type="password" name="confirmation" class="form-control password" id="yourConfirmation" required>
+                      <span class="input-group-text" id="inputGroupAppend1" ><i id="eye1" data-toggle="tooltip" data-placement="top" title="show password" style="cursor:pointer" class="bi bi-eye-fill"></i></span>
+                      <div class="invalid-feedback">Please enter your password!</div>
+                    </div>
+                  </div>
+
+
+
+                  <div class="col-12">
+                    <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                  </div>
+                  <div class="col-12">
+                    <p class="small mb-0">Already have an account? <a href="{{url_for('login')}}">Log in</a></p>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  <script>
+    /**
+     * Initiate Bootstrap validation check
+     * https://getbootstrap.com/docs/5.0/forms/validation/
+     */
+    var needsValidation = document.querySelectorAll('.needs-validation')
+
+  Array.prototype.slice.call(needsValidation)
+    .forEach(function(form) {
+      form.addEventListener('submit', function(event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+
+  </script>
+  <script>
+    // https://developer.mozilla.org/en-US/docs/Web/API/Element/classList
+
+        var x = document.getElementsByClassName("password");
+        var eye = document.querySelectorAll(".bi.bi-eye-fill");
+        console.log('hi')
+        for(let i=0;i<x.length;i++){
+            eye[i].addEventListener('click', function(){
+                console.log('jijsdi')
+                if (x[i].type === "password" ) {
+                console.log('zzz')
+                x[i].type = "text";
+                eye[i].classList.replace('bi-eye-fill','bi-eye-slash');
+                // eye.classList.add('.bi.bi-eye-slash');
+              } else {
+                    x[i].type = "password";
+                    eye[i].classList.replace('bi-eye-slash', 'bi-eye-fill');
+                    // eye.classList.add('.bi.bi-eye-fill');
+              }
+            })
+
+        }
+
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    /* I don't own this script but i edit it quite a bit */
+/* copied from https://www.formget.com/password-strength-checker-in-jquery/ */
+
+$(() => {
+$('#yourPassword').keyup(function() {
+$('#result').html(checkStrength($('#yourPassword').val()))
+})
+function checkStrength(password) {
+    var strength = 0
+    const btn = $('#submit')
+    if (password.length == 0) {
+        $('#result').hide('fast')
+    } else {
+        $('#result').show('fast')
+    }
+    if (password.length < 6) {
+        $('#result').removeClass()
+        // class=short defined in pass.css
+        $('#result').addClass('short')
+        // https://www.w3schools.com/jquery/html_prop.asp
+        btn.prop('disabled', true)
+        return 'Too short'
+    }
+    if (password.length > 7) strength += 1
+    // If password contains both lower and uppercase characters, increase strength value.
+    if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) strength += 1
+    // If it has numbers and characters, increase strength value.
+    if (password.match(/([a-zA-Z])/) && password.match(/([0-9])/)) strength += 1
+    // If it has one special character, increase strength value.
+    if (password.match(/([!,%,&,@,#,$,^,*,?,_,~])/)) strength += 1
+    // If it has two special characters, increase strength value.
+    if (password.match(/(.*[!,%,&,@,#,$,^,*,?,_,~].*[!,%,&,@,#,$,^,*,?,_,~])/)) strength += 1
+    // Calculated strength value, we can return messages
+    // If value is less than 2
+    if (strength < 2) {
+        $('#result').removeClass()
+        $('#result').addClass('weak')
+        btn.prop('disabled', true)
+        return 'Weak'
+    } else if (strength == 2) {
+        $('#result').removeClass()
+        $('#result').addClass('good')
+        btn.prop('disabled', false)
+        return 'Good'
+    } else {
+        $('#result').removeClass()
+        $('#result').addClass('strong')
+        btn.prop('disabled', false)
+        return 'Strong'
+    }
+}
+});
+  </script>
+
+<script>
+  // https://www.w3schools.com/bootstrap/bootstrap_ref_js_tooltip.asp
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+</script>
+
+{% endblock %}
